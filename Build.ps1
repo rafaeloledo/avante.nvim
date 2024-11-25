@@ -61,6 +61,7 @@ function Download-Prebuilt($feature) {
         Invoke-WebRequest -Uri $using:ARTIFACT_URL -OutFile $using:TempFile
         Expand-Archive -Path $using:TempFile -DestinationPath $using:TARGET_DIR -Force
     }
+    
     Wait-Job $Job
     Receive-Job $Job
     Remove-Item $TempFile
