@@ -57,8 +57,12 @@ function Download-Prebuilt($feature) {
 
     # Download and extract the artifact
     $TempFile = Get-Item ([System.IO.Path]::GetTempFilename()) | Rename-Item -NewName { $_.Name + ".zip" } -PassThru
-    Invoke-WebRequest -Uri $ARTIFACT_URL -OutFile $TempFile
-    Expand-Archive -Path $TempFile -DestinationPath $TARGET_DIR -Force
+    $Job = Start-Job -ScriptBlock {
+        Invoke-WebRequest -Uri $using:ARTIFACT_URL -OutFile $using:TempFile
+        Expand-Archive -Path $using:TempFile -DestinationPath $using:TARGET_DIR -Force
+    }
+    Wait-Job $Job
+    Receive-Job $Job
     Remove-Item $TempFile
 }
 
