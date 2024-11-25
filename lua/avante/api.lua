@@ -50,6 +50,7 @@ M.build = function(opts)
     build_directory = to_windows_path(build_directory)
     cmd = {
       "powershell",
+      "-NoProfile",
       "-ExecutionPolicy",
       "Bypass",
       "-File",
